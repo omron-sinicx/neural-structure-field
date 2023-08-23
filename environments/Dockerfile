@@ -1,9 +1,9 @@
 ARG BASE_IMAGE=ubuntu:20.04
 FROM ${BASE_IMAGE}
 
-ARG PROJECT_NAME=ascender
-ARG USER_NAME=challenger
-ARG GROUP_NAME=challengers
+ARG PROJECT_NAME=nesf
+ARG USER_NAME=nesf_user
+ARG GROUP_NAME=nesf_group
 ARG UID=1000
 ARG GID=1000
 ARG PYTHON_VERSION=3.8
@@ -39,6 +39,8 @@ RUN groupadd -g ${GID} ${GROUP_NAME} \
 
 USER ${USER_NAME}
 WORKDIR ${APPLICATION_DIRECTORY}
+
+ENV APPLICATION_DIRECTORY ${APPLICATION_DIRECTORY}
 
 # If ${RUN_POETRY_INSTALL_AT_BUILD_TIME} = "true", install Python package by Poetry and move .venv under ${HOME}.
 # This process is for CI (GitHub Actions). To prevent overwrite by volume of docker compose, .venv is moved under ${HOME}.

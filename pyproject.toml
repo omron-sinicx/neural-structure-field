@@ -31,6 +31,8 @@ torchvision = {version = "^0.15.2+cu118", source = "torch_cu118"}
 torchaudio = {version = "^2.0.2+cu118", source = "torch_cu118"}
 torch-geometric = "^2.3.1"
 pymatgen = "^2023.8.10"
+mp-api = "^0.34.3"
+mpcontribs-client = "^5.4.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
@@ -41,6 +43,7 @@ mdformat_footnote = "^0.1.1"
 flake8 = "^5.0.0"
 mypy = "^1.0.1"
 pytest-cov = "^4.0.0"
+ipykernel = "^6.25.1"
 
 
 [[tool.poetry.source]]
