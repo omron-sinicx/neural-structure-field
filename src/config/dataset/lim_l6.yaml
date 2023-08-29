@@ -1,0 +1,4 @@
+dataset_name: "lim_l6"
+train_dataset_dir: "/workspace/data/dataset/dataset_lim_l6_train"
+validation_dataset_dir: "/workspace/data/dataset/dataset_lim_l6_val"
+test_dataset_dir: "/workspace/data/dataset/dataset_lim_l6_test"  

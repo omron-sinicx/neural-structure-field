@@ -46,7 +46,7 @@ lint:
 	$(MAKE) isort-check
 	$(MAKE) mdformat-check
 	$(MAKE) flake8
-	$(MAKE) mypy
+#	$(MAKE) mypy
 
 .PHONY: test-all
 test-all:

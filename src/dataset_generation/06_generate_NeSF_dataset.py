@@ -1,6 +1,7 @@
 import json
 import math
 import os
+import pickle
 from pathlib import Path
 
 import numpy as np
@@ -73,3 +74,12 @@ for dataset_file in dataset_file_list:
         json.dump(dataset_attr | {"mpid": split["test"]}, f, indent=4)
     with open(val_dataset_dir / "dataset_attr.json", "w") as f:
         json.dump(dataset_attr | {"mpid": split["val"]}, f, indent=4)
+
+    with open(train_dataset_dir / "dataset.pkl", "wb") as f:
+        pickle.dump(train_data, f)
+    with open(test_dataset_dir / "dataset.pkl", "wb") as f:
+        pickle.dump(test_data, f)
+    with open(val_dataset_dir / "dataset.pkl", "wb") as f:
+        pickle.dump(val_data, f)
+
+    print("done")

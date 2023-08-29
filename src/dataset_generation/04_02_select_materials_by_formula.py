@@ -14,6 +14,7 @@ input_path = data_path / "structures_conventional_cell"
 candidate_formulas = ["ABC3", "ABC2", "AB"]
 max_lattice_length = 6
 min_lattice_coord = -0.1
+max_num_atoms = 40
 
 dataset_name = "ICSG3D"
 
@@ -25,6 +26,8 @@ output_file_path.parent.mkdir(exist_ok=True, parents=True)
 
 def process_entry(e):
     entry, conventional_cell_structure = e
+    if conventional_cell_structure.num_sites > max_num_atoms:
+        return None
     if entry["formula_anonymous"] not in candidate_formulas:
         return None
     if SpacegroupAnalyzer(conventional_cell_structure).get_crystal_system() != "cubic":

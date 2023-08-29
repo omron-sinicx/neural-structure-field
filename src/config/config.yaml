@@ -1,0 +1,87 @@
+defaults:
+  - _self_
+  - dataset: YBCO13
+  #- dataset: lim_l6
+  #- dataset: ICSG3D
+  - network: nesf
+
+data_module:
+  batch_size: 128
+  num_dataloder_workers: 4
+
+sampling:
+  training:
+    global:
+      interval: 1.0 #Angstrom
+      stddev: 0.5 #Angstrom
+    local:
+      interval: 0.3 #Angstrom
+      range: 1.2 #Angstrom
+      stddev: 0.15 #Angstrom
+    species:
+      interval: 0.1 #Angstrom
+      range: 0.6 #Angstrom
+      stddev: 0.05 #Angstrom
+  inference:
+    global:
+      interval: 0.5 #Angstrom
+    species:
+      interval: 0.1 #Angstrom
+      range: 0.6 #Angstrom
+
+loss_weights:
+  pos: 10.0
+  spec: 0.1
+  length: 1.0
+  angle: 1.0
+  kld: 0.001
+
+training:
+  lr: 0.001
+  scheduler_step_size: 640
+  scheduler_gamma: 0.5
+
+trainer:
+  max_epochs: 3200
+  #max_epochs: 1
+
+logger:
+  project: NeSF_project
+  name: NeSF
+  save_dir: /workspace/logs
+  #log_model: all # last and best weights are saved
+  log_model: True # last and best weights are saved
+
+checkpoint:
+  monitor: "val_loss"
+  save_top_k: 3
+  mode: "min"
+  save_last: True
+  dirpath: "/workspace/checkpoints/" 
+
+reconstruction:
+  mode: trained # ground_truth or trained
+  #mode: ground_truth # ground_truth or trained
+  batch_size: 64
+  num_iteration: 64
+  residual_distance_threshold: 0.9
+  nms:
+    radius: 0.5
+    num_points_threshold: 10
+  output_dir: "/workspace/reconstruction/"
+
+trained_checkpoints:
+  lim_l6: "/workspace/checkpoints/NeSF_project/rp9ugolq/last.ckpt"
+  YBCO13: "/workspace/checkpoints/NeSF_project/rennw72s/last.ckpt"
+
+evaluate:
+  log_dir: "/workspace/logs"
+# distance_threshold: -1 # if negative, do not use this
+# 
+# flush_checkpoint_dir: True
+# eval:
+#   device: "cuda"
+# logger:
+#   experiment_name: "Default"
+#   save_dir: "/workspace/mlruns"
+

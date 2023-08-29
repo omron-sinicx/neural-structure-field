@@ -33,6 +33,14 @@ torch-geometric = "^2.3.1"
 pymatgen = "^2023.8.10"
 mp-api = "^0.34.3"
 mpcontribs-client = "^5.4.3"
+hydra-core = "^1.3.2"
+pytorch-lightning = "^2.0.7"
+torch-cluster = {version = "^1.6.1+pt20cu118", source = "pyg_pt201_cu118"}
+torch-scatter = {version = "^2.1.1+pt20cu118", source = "pyg_pt201_cu118"}
+torch-sparse = {version = "^0.6.17+pt20cu118", source = "pyg_pt201_cu118"}
+pyg-lib = {version = "^0.2.0+pt20cu118", source = "pyg_pt201_cu118"}
+torch-spline-conv = {version = "^1.2.2+pt20cu118", source = "pyg_pt201_cu118"}
+wandb = "^0.15.8"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
@@ -49,6 +57,12 @@ ipykernel = "^6.25.1"
 [[tool.poetry.source]]
 name = "torch_cu118"
 url = "https://download.pytorch.org/whl/cu118"
+priority = "explicit"
+
+
+[[tool.poetry.source]]
+name = "pyg_pt201_cu118"
+url = "https://data.pyg.org/whl/torch-2.0.1+cu118.html"
 priority = "explicit"
 
 [tool.black]

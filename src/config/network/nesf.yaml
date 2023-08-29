@@ -1,0 +1,46 @@
+latent_size: 192
+vae: False
+encoder:
+  smlp_pos:
+    channels: [64, 128, 128]
+    use_bn: True
+    use_dropout: False
+    drop_prob: 0.0
+  smlp_spec:
+    channels: [128, 128]
+    use_bn: True
+    use_dropout: False
+    drop_prob: 0.0
+  smlp_mix:
+    channels: [512]
+    use_bn: True
+    use_dropout: True
+    drop_prob: 0.3
+  mlp:
+    channels: [256, 256]
+    use_bn: True
+    use_dropout: True
+    drop_prob: 0.3
+decoder:
+  length:
+    channels: [128]
+    use_bn: False
+    use_dropout: False
+    drop_prob: 0.0
+  angle:
+    channels: [128]
+    use_bn: False
+    use_dropout: False
+    drop_prob: 0.0
+  pos:
+    channels: [256, 128, 128, 128, 128, 128, 128, 128]
+    input_pos: [True, True, True, True, True, True, True]
+    use_bn: True
+    use_dropout: False
+    drop_prob: 0.0
+  spec:
+    channels: [256, 128]
+    input_pos: [True]
+    use_bn: True
+    use_dropout: False
+    drop_prob: 0.0

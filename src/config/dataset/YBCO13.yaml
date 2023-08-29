@@ -1,0 +1,4 @@
+dataset_name: "YBCO13"
+train_dataset_dir: "/workspace/data/dataset/dataset_YBCO13_train"
+validation_dataset_dir: "/workspace/data/dataset/dataset_YBCO13_val"
+test_dataset_dir: "/workspace/data/dataset/dataset_YBCO13_test"  

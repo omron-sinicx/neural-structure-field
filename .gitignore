@@ -1,6 +1,9 @@
 data/*
 models/*
 outputs/*
+reconstruction/*
+logs/*
+checkpoints/*
 __pycache__
 .coverage
 .mypy_cache
