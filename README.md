@@ -23,6 +23,7 @@ Representing crystal structures of materials to facilitate determining them via 
 - Journal version
 
 - Preprint version
+
 ```
 @misc{chiba2022nesf_arxiv,
   title={Neural Structure Fields with Application to Crystal Structure Autoencoders},
@@ -35,6 +36,7 @@ Representing crystal structures of materials to facilitate determining them via 
 ```
 
 - NeurIPS 2022 Workshop version
+
 ```
 @inproceedings{chiba2022nesf_neuripsws,
   title={Neural Structure Fields with Application to Crystal Structure Autoencoders},
@@ -112,7 +114,7 @@ At /workspace in the container, following commands installs dependencies.
 
 ```bash
 poetry install
-``````
+```
 
 ## Dataset Preparation
 
@@ -123,7 +125,9 @@ Please see: [src/dataset_generation/README.md](src/dataset_generation/README.md)
 Run the following command to train the model.
 
 ```bash
-poetry run python src/train.py
+poetry run python src/train.py dataset=ICSG3D
+poetry run python src/train.py dataset=lim_l6
+poetry run python src/train.py dataset=YBCO13
 ```
 
 Settings are given by `src/configs/config.yaml`. We use [Hydra](https://hydra.cc/) to manage settings.
@@ -132,29 +136,43 @@ Settings are given by `src/configs/config.yaml`. We use [Hydra](https://hydra.cc
 
 Run the following command to reconstruct the crystal structure.
 
-```bash
-poetry run python src/reconstruct.py
-```
+Before running this script, please write checkpoint path to `trained_checkpoints` in `src/config/config.yaml`.
 
 This script outputs the reconstructed crystal structure at `workspace/reconstruction`.
+
 This script also can reconstruct the crystal structure from the ground truth strcutre field, which is for test how behave the reconstruction algorithm.
+
+```bash
+# Reconstruction from the predicted structure field
+poetry run python src/reconstruction.py dataset=ICSG3D
+poetry run python src/reconstruction.py dataset=lim_l6
+poetry run python src/reconstruction.py dataset=YBCO13
+# Reconstruction from the ground truth structure field
+poetry run python src/reconstruction.py dataset=ICSG3D reconstruction.mode=ground_truth
+poetry run python src/reconstruction.py dataset=lim_l6 reconstruction.mode=ground_truth
+poetry run python src/reconstruction.py dataset=YBCO13 reconstruction.mode=ground_truth
+```
 
 ## Evaluation
 
 Run the following command to evaluate the model.
 
 ```bash
-poetry run python src/evaluate.py
+poetry run python src/evaluate.py dataset=ICSG3D
+poetry run python src/evaluate.py dataset=lim_l6
+poetry run python src/evaluate.py dataset=YBCO13
 ```
 
 This script outputs the evaluation results at `workspace/logs`.
 
 ### License
+
 [MIT License](LICENSE.md)
 
 ### Acknowledgements
 
 - We thank the following projects.
+
   - [The Materials Project](https://next-gen.materialsproject.org/)
   - [Pymatgen](https://pymatgen.org/)
   - [PyTorch](https://pytorch.org/)
@@ -162,4 +180,3 @@ This script outputs the evaluation results at `workspace/logs`.
   - [PyTorch Lightning](https://lightning.ai/)
 
 - We also thank the authors of the repositories template [Ascender](https://github.com/cvpaperchallenge/Ascender).
-

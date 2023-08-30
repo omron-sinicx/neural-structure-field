@@ -3,6 +3,10 @@ defaults:
   - dataset: YBCO13
   #- dataset: lim_l6
   #- dataset: ICSG3D
+  # paper_version_datasets
+  #- dataset: YBCO13_paper
+  #- dataset: lim_l6_paper
+  #- dataset: ICSG3D_paper
   - network: nesf
 
 data_module:
@@ -43,6 +47,7 @@ training:
 
 trainer:
   max_epochs: 3200
+  #max_epochs: 1
 
 logger:
   project: NeSF_project

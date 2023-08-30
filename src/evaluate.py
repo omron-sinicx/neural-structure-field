@@ -55,13 +55,18 @@ def evaluate_entry(
 
     # compute spec error
 
-    nearest_idx = nearest(pred_pos, true_pos)
-    compare_true_spec = true_spec[nearest_idx]
-    species_correct_detected = compare_true_spec == pred_spec
+    if num_pred_points > 0:
+        nearest_idx = nearest(pred_pos, true_pos)
+        compare_true_spec = true_spec[nearest_idx]
 
-    nearest_idx = nearest(true_pos, pred_pos)
-    compare_pred_specs = pred_spec[nearest_idx]
-    species_correct_exist = true_spec == compare_pred_specs
+        nearest_idx = nearest(true_pos, pred_pos)
+        compare_pred_spec = pred_spec[nearest_idx]
+    else:
+        compare_true_spec = torch.ones((num_true_points,), dtype=torch.int64) * -1
+        compare_pred_spec = torch.ones((num_pred_points,), dtype=torch.int64) * -1
+
+    species_correct_detected = compare_true_spec == pred_spec
+    species_correct_exist = true_spec == compare_pred_spec
 
     length_error = torch.abs(true_length - pred_length).flatten()
     angle_error = torch.abs(true_angle - pred_angle).flatten() * 180 / np.pi
@@ -172,13 +177,9 @@ angle_error: {angle_error:.4f}
     }
 
 
-@hydra.main(version_base=None, config_name="config", config_path="./config")
-def main(config):
-    log_dir = Path(config["evaluate"]["log_dir"])
-    reconstructed_dir = Path(config["reconstruction"]["output_dir"])
-
-    # prepare dataset
-    data_module = MPDatasetDataModule(**config["dataset"], **config["data_module"])
+def evaluate_splits(
+    data_module, reconstructed_data, splits, log_dir=None, postfix="trained"
+):
     logger.info(f"Dataset: {data_module.dataset_name}")
 
     datasets = {
@@ -190,6 +191,53 @@ def main(config):
     logger.info(f"Train dataset size: {len(datasets['train'])}")
     logger.info(f"Validation dataset size: {len(datasets['validation'])}")
     logger.info(f"Test dataset size: {len(datasets['test'])}")
+
+    result = dict()
+
+    # evaluate
+    for split in splits:
+        assert split in datasets.keys()
+        logger.info(f"Split: {split}")
+
+        # get dataset
+        dataset = datasets[split]
+        logger.info(f"Dataset size: {len(dataset)}")
+
+        # get reconstructed data
+        reconstructed = reconstructed_data[split]
+        logger.info(f"Reconstructed data size: {len(reconstructed)}")
+
+        # check all data is reconstructed
+        reconstructed_mpids = set(reconstructed.keys())
+        assert len(dataset) == len(reconstructed)
+        assert all(data["mpid"] in reconstructed_mpids for data in dataset)
+
+        # evaluate
+        if log_dir is None:
+            log_f = None
+        else:
+            log_f = open(
+                log_dir / f"{data_module.dataset_name}_{split}_{postfix}.log", mode="w"
+            )
+
+        retval = evaluate_dataset(dataset, reconstructed, split, log_f=log_f)
+
+        if log_f is not None:
+            log_f.close()
+
+        result[split] = retval
+
+    # write summary
+    return result
+
+
+@hydra.main(version_base=None, config_name="config", config_path="./config")
+def main(config):
+    log_dir = Path(config["evaluate"]["log_dir"])
+    reconstructed_dir = Path(config["reconstruction"]["output_dir"])
+
+    # prepare dataset
+    data_module = MPDatasetDataModule(**config["dataset"], **config["data_module"])
 
     # set reconstruction mode: trained or ground_truth
     mode = config["reconstruction"].get("mode", "trained")
@@ -210,31 +258,15 @@ def main(config):
         splits = reconstructed_data.keys()
 
     # evaluate
-    for split in splits:
-        assert split in datasets.keys()
-        logger.info(f"Split: {split}")
+    evaluate_splits(
+        data_module,
+        reconstructed_data,
+        splits,
+        log_dir=log_dir,
+        postfix=mode,
+    )
 
-        log_f = open(
-            log_dir / f"{data_module.dataset_name}_{split}_{mode}.log", mode="w"
-        )
-
-        # get dataset
-        dataset = datasets[split]
-        logger.info(f"Dataset size: {len(dataset)}")
-
-        # get reconstructed data
-        reconstructed = reconstructed_data[split]
-        logger.info(f"Reconstructed data size: {len(reconstructed)}")
-
-        # check all data is reconstructed
-        reconstructed_mpids = set(reconstructed.keys())
-        assert len(dataset) == len(reconstructed)
-        assert all(data["mpid"] in reconstructed_mpids for data in dataset)
-
-        # evaluate
-        evaluate_dataset(dataset, reconstructed, split, log_f=log_f)
-
-        log_f.close()
+    logger.info("Done")
 
 
 if __name__ == "__main__":

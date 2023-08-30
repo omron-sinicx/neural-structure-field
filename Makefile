@@ -1,22 +1,22 @@
 .PHONY: black-check
 black-check:
-	poetry run black --check src tests
+	poetry run black --check src
 
 .PHONY: black
 black:
-	poetry run black src tests
+	poetry run black src
 
 .PHONY: flake8
 flake8:
-	poetry run flake8 src tests
+	poetry run flake8 src
 
 .PHONY: isort-check
 isort-check:
-	poetry run isort --check-only src tests
+	poetry run isort --check-only src
 
 .PHONY: isort
 isort:
-	poetry run isort src tests
+	poetry run isort src
 
 .PHONY: mdformat
 mdformat:
