@@ -1,5 +1,4 @@
 dataset_name: "ICSG3D"
-    train_dataset_dir: "/workspace/data/dataset_paper/dataset_ICSG3D_train"
-    validation_dataset_dir: "/workspace/data/dataset_paper/dataset_ICSG3D_val"
-    test_dataset_dir: "/workspace/data/dataset_paper/dataset_ICSG3D_test"  
-    
+train_dataset_dir: "/workspace/data/dataset_paper/dataset_ICSG3D_train"
+validation_dataset_dir: "/workspace/data/dataset_paper/dataset_ICSG3D_val"
+test_dataset_dir: "/workspace/data/dataset_paper/dataset_ICSG3D_test"  
