@@ -1,31 +1,26 @@
 [tool.poetry]
-name = "ascender"
-version = "0.1.0"
-description = "Project template for XCCV group of cvpaper.challenge."
+name = "NeSF"
+version = "1.0.0"
+description = "Official implementation of Neural Structure Fields with Application to Crystal Structure Autoencoders"
 license = "MIT"
-authors = ["cvpaper.challenge XCCV group"]
-maintainers = ["yoshihiro fukuhara <gatheluck@gmail.com>"]
+authors = ["Naoya Chiba, Yuta Suzuki, Tatsunori Taniai, Ryo Igarashi, Yoshitaka Ushiku, Kotaro Saito, Kanta Ono"]
+maintainers = ["naoya chiba <chiba@nchiba.net>"]
 readme = "README.md"
 keywords = [
-    "ascender",
-    "Python",
-    "projects",
-    "project templates",
-    "project directory",
+    "NeSF",
+    "Neural Structure Field",
+    "Materials Informatics",
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Environment :: Console",
     "Environment :: GPU :: NVIDIA CUDA",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Natural Language :: Japanese",
-    "Programming Language :: Python",
-    "Topic :: Software Development",
+    "Programming Language :: Python :: 3",
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 torch = {version = "^2.0.1+cu118", source = "torch_cu118"}
 torchvision = {version = "^0.15.2+cu118", source = "torch_cu118"}
 torchaudio = {version = "^2.0.2+cu118", source = "torch_cu118"}
@@ -73,7 +68,7 @@ profile = "black"
 line_length = 88
 
 [tool.mypy]
-python_version = 3.8
+python_version = 3.10
 # following setting is same as pysen
 # https://github.com/pfnet/pysen/blob/main/setup.cfg#L12
 check_untyped_defs = true

@@ -26,13 +26,13 @@ mdformat:
 mdformat-check:
 	poetry run mdformat --check *.md
 
-.PHONY: mypy
-mypy:
-	poetry run mypy src
+# .PHONY: mypy
+# mypy:
+# 	poetry run mypy src
 
-.PHONY: test
-test:
-	poetry run pytest tests --cov=src --cov-report term-missing --durations 5
+# .PHONY: test
+# test:
+# 	poetry run pytest tests --cov=src --cov-report term-missing --durations 5
 
 .PHONY: format
 format:
@@ -48,7 +48,7 @@ lint:
 	$(MAKE) flake8
 #	$(MAKE) mypy
 
-.PHONY: test-all
-test-all:
-	$(MAKE) lint
-	$(MAKE) test
+# .PHONY: test-all
+# test-all:
+# 	$(MAKE) lint
+# 	$(MAKE) test

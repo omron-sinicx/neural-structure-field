@@ -43,7 +43,6 @@ training:
 
 trainer:
   max_epochs: 3200
-  #max_epochs: 1
 
 logger:
   project: NeSF_project
@@ -71,17 +70,9 @@ reconstruction:
   output_dir: "/workspace/reconstruction/"
 
 trained_checkpoints:
-  lim_l6: "/workspace/checkpoints/NeSF_project/rp9ugolq/last.ckpt"
-  YBCO13: "/workspace/checkpoints/NeSF_project/rennw72s/last.ckpt"
+  lim_l6: "/workspace/checkpoints/NeSF_project/3za5e4xz/last.ckpt"
+  YBCO13: "/workspace/checkpoints/NeSF_project/m9km2c5y/last.ckpt"
+  ICSG3D: "/workspace/checkpoints/NeSF_project/krjbysgc/last.ckpt"
 
 evaluate:
   log_dir: "/workspace/logs"
-# distance_threshold: -1 # if negative, do not use this
-# 
-# flush_checkpoint_dir: True
-# eval:
-#   device: "cuda"
-# logger:
-#   experiment_name: "Default"
-#   save_dir: "/workspace/mlruns"
-
