@@ -62,8 +62,8 @@ def evaluate_entry(
         nearest_idx = nearest(true_pos, pred_pos)
         compare_pred_spec = pred_spec[nearest_idx]
     else:
-        compare_true_spec = torch.ones((num_true_points,), dtype=torch.int64) * -1
-        compare_pred_spec = torch.ones((num_pred_points,), dtype=torch.int64) * -1
+        compare_true_spec = torch.ones(pred_spec.shape, dtype=torch.int64) * -1
+        compare_pred_spec = torch.ones(true_spec.shape, dtype=torch.int64) * -1
 
     species_correct_detected = compare_true_spec == pred_spec
     species_correct_exist = true_spec == compare_pred_spec
@@ -234,6 +234,8 @@ def evaluate_splits(
 @hydra.main(version_base=None, config_name="config", config_path="./config")
 def main(config):
     log_dir = Path(config["evaluate"]["log_dir"])
+    log_dir.mkdir(parents=True, exist_ok=True)
+
     reconstructed_dir = Path(config["reconstruction"]["output_dir"])
 
     # prepare dataset
@@ -258,7 +260,7 @@ def main(config):
         splits = reconstructed_data.keys()
 
     # evaluate
-    evaluate_splits(
+    results = evaluate_splits(
         data_module,
         reconstructed_data,
         splits,
@@ -266,6 +268,10 @@ def main(config):
         postfix=mode,
     )
 
+    with open(log_dir / "metrics.csv", mode="a") as f:
+        for split, result in results.items():
+            for k, v in result.items():
+                f.write(f"{data_module.dataset_name},{split},{k},{v}\n")
     logger.info("Done")
 
 

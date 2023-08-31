@@ -116,9 +116,28 @@ At /workspace in the container, following commands installs dependencies.
 poetry install
 ```
 
+### Weights and Biases (WandB)
+
+We use [WandB](https://wandb.ai/site) to manage experiments.
+Please sign up for WandB and login to WandB.
+
+```bash
+poetry run wandb login
+```
+
+If you want not to use WandB without sign up, please refer to the following link:
+https://docs.wandb.ai/guides/app/features/anon
+
+When you disable WandB:
+
+```bash
+poetry run wandb disabled
+```
+
 ## Dataset Preparation
 
 Please see: [src/dataset_generation/README.md](src/dataset_generation/README.md)
+Datasets which are used in the paper is included in this repository at `data/dataset_paper/`.
 
 ## Training
 
@@ -128,6 +147,14 @@ Run the following command to train the model.
 poetry run python src/train.py dataset=ICSG3D
 poetry run python src/train.py dataset=lim_l6
 poetry run python src/train.py dataset=YBCO13
+```
+
+For paper version dataset.
+
+```bash
+poetry run python src/train.py dataset=ICSG3D_paper
+poetry run python src/train.py dataset=lim_l6_paper
+poetry run python src/train.py dataset=YBCO13_paper
 ```
 
 Settings are given by `src/configs/config.yaml`. We use [Hydra](https://hydra.cc/) to manage settings.

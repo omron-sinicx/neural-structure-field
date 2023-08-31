@@ -1,4 +1,4 @@
-dataset_name: "YBCO13_fold8"
+dataset_name: "YBCO13_fold8_paper"
 train_dataset_dir: "/workspace/data/dataset_paper/dataset_YBCO13_fold8_train"
 validation_dataset_dir: "/workspace/data/dataset_paper/dataset_YBCO13_fold8_val"
 test_dataset_dir: "/workspace/data/dataset_paper/dataset_YBCO13_fold8_test"  

@@ -91,6 +91,11 @@ def main(config):
     wandb_logger.log_metrics(metrics_dict)
     logger.info("Evaluation finished.")
 
+    with open(Path(config["logger"]["save_dir"]) / "metrics.csv", mode="a") as f:
+        for split, result in results.items():
+            for k, v in result.items():
+                f.write(f"{data_module.dataset_name},{split},{k},{v}\n")
+
     # finalize
     wandb_logger.finalize("success")
     logger.info("Done.")

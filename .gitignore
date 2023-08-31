@@ -3,9 +3,11 @@
 /models
 /outputs
 /reconstruction
+/evaluation
 /logs
 /checkpoints
 /misc
+/wandb
 /.venv
 __pycache__
 .coverage
