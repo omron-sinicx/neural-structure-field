@@ -216,6 +216,7 @@ def evaluate_splits(
         if log_dir is None:
             log_f = None
         else:
+            log_dir.mkdir(parents=True, exist_ok=True)
             log_f = open(
                 log_dir / f"{data_module.dataset_name}_{split}_{postfix}.log", mode="w"
             )
