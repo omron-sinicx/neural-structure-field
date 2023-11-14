@@ -1,16 +1,18 @@
 defaults:
   - _self_
-  - dataset: YBCO13
+  #- dataset: YBCO13
   #- dataset: lim_l6
   #- dataset: ICSG3D
   # paper_version_datasets
   #- dataset: YBCO13_paper
-  #- dataset: lim_l6_paper
+  - dataset: lim_l6_paper
   #- dataset: ICSG3D_paper
-  - network: nesf
+  #- network: nesf
+  - network: nesf_pe
 
 data_module:
-  batch_size: 128
+  #batch_size: 128
+  batch_size: 64
   num_dataloder_workers: 4
 
 sampling:
@@ -46,8 +48,8 @@ training:
   scheduler_gamma: 0.5
 
 trainer:
-  max_epochs: 3200
-  #max_epochs: 1
+  #max_epochs: 3200
+  max_epochs: 1
 
 logger:
   project: NeSF_project

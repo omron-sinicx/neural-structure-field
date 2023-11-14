@@ -1,3 +1,4 @@
+import math
 from logging import getLogger
 
 import torch
@@ -125,16 +126,30 @@ class Encoder(Module):
 # Neural Field-based Decoder
 class ImplicitDecoder(Module):
     def __init__(
-        self, channels, input_pos, use_bn=True, use_dropout=False, drop_prob=0.3
+        self,
+        channels,
+        input_pos,
+        use_bn=True,
+        use_dropout=False,
+        drop_prob=0.3,
+        positional_encoding=None,
     ):
         super().__init__()
         assert len(channels) == len(input_pos) + 1
+        if positional_encoding == "None":
+            positional_encoding = None
+        self.positional_encoding = positional_encoding
+
+        if self.positional_encoding is not None:
+            input_dim = self.positional_encoding.L * 6
+        else:
+            input_dim = 3
 
         # construct network modules
         self.layers = []
         for p, n, ipp in zip(channels[:-1], channels[1:], input_pos):
             if ipp:
-                self.layers.append(Linear(p + 3, n))
+                self.layers.append(Linear(p + input_dim, n))
             else:
                 self.layers.append(Linear(p, n))
         self.layers = ModuleList(self.layers)
@@ -151,20 +166,57 @@ class ImplicitDecoder(Module):
 
         self.input_pos = input_pos
 
+    def compute_positional_encoding(self, pos):
+        # pos: <batch>[num_entry, 3]
+        assert pos.shape[1] == 3
+        num_entry = pos.shape[0]
+
+        pos = pos * math.pi
+        # [num_entry, 3] -> [num_entry, 3, L, 2]
+        pos = pos.view(num_entry, 3, 1, 1).repeat(1, 1, self.positional_encoding.L, 2)
+        # [L]
+        factors = torch.pow(
+            2.0,
+            torch.arange(
+                self.positional_encoding.L,
+                dtype=torch.float,
+                device=pos.device,
+            ),
+        )
+        # [L] -> [1, 1, L, 1]
+        factors = factors.view(1, 1, self.positional_encoding.L, 1)
+        # [num_entry, 3, L, 2] -> [num_entry, 3, L, 2]
+        pos = pos * factors
+        # sinusoid PE
+        pos[:, :, :, 0] = torch.sin(pos[:, :, :, 0])
+        pos[:, :, :, 1] = torch.cos(pos[:, :, :, 1])
+        # [num_entry, 3, L, 2] -> [num_entry, 6 * L]
+        pos = pos.view(num_entry, 6 * self.positional_encoding.L)
+
+        # [num_entry, 6 * L]
+        return pos
+
     def forward(self, latent, query):
         # latent: [batch, channel], query: <batch>[query, dim]
         assert query.pos.shape[1] == 3
         x = latent[query.batch, :]
 
+        # <batch>[query, 3]
+        pos = query.pos
+        if self.positional_encoding is not None:
+            # <batch>[query, 3] -> <batch>[query, L * 6]
+            with torch.no_grad():
+                pos = self.compute_positional_encoding(pos)
+
         for layer, bn, ipp in zip(self.layers[:-1], self.bn, self.input_pos[:-1]):
             if ipp:
-                x = torch.cat([x, query.pos], dim=1)
+                x = torch.cat([x, pos], dim=1)
             x = layer(x)
             x = self.relu(x)
             x = bn(x)
             x = self.dropout(x)
         if self.input_pos[-1]:
-            x = torch.cat([x, query.pos], dim=1)
+            x = torch.cat([x, pos], dim=1)
         x = self.layers[-1](x)
 
         # [query, channel]
