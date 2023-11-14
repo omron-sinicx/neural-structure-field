@@ -48,8 +48,8 @@ training:
   scheduler_gamma: 0.5
 
 trainer:
-  #max_epochs: 3200
-  max_epochs: 1
+  max_epochs: 3200
+  #max_epochs: 1
 
 logger:
   project: NeSF_project
