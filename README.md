@@ -4,13 +4,13 @@
 ![python versions](https://img.shields.io/badge/python-3.10-blue)
 [![MIT License](https://img.shields.io/github/license/cvpaperchallenge/Ascender?color=green)](LICENSE)
 
-This is a official implementation of [Neural Structure Fields with Application to Crystal Structure Autoencoders](https://arxiv.org/abs/2212.13120) (NeSF).
+This is a official implementation of [Neural Structure Fields with Application to Crystal Structure Autoencoders](https://www.nature.com/articles/s43246-023-00432-w) (NeSF).
 
 ## Paper
 
 - Title: Neural Structure Fields with Application to Crystal Structure Autoencoders
 - Authors: Naoya Chiba, Yuta Suzuki, Tatsunori Taniai, Ryo Igarashi, Yoshitaka Ushiku, Kotaro Saito, Kanta Ono
-- URL (Journal version):
+- URL (Journal version): https://www.nature.com/articles/s43246-023-00432-w
 - URL (Preprint version): https://arxiv.org/abs/2212.13120
 - URL (NeurIPS 2022 Workshop version): https://openreview.net/forum?id=qLKFSAvMka4
 
@@ -21,6 +21,17 @@ Representing crystal structures of materials to facilitate determining them via 
 ### Citation
 
 - Journal version
+
+```
+@article{chiba2023nesf,
+  author={Naoya Chiba and Yuta Suzuki and Tatsunori Taniai and Ryo Igarashi and Yoshitaka Ushiku and Kotaro Saito and Kanta Ono},
+  title={Neural structure fields with application to crystal structure autoencoders},
+  journal={Communications Materials},
+  year={2023},
+  volume={4},
+  number={106}
+}
+```
 
 - Preprint version
 
