@@ -44,7 +44,7 @@ authors:
     affiliation: [6]
     position: professor
     url: https://scholar.google.com/citations?user=mJwzYNwAAAAJ
-contact_ids: ['github', 1] #=> github issues, contact@sinicx.com, 2nd author
+contact_ids: ['github'] #=> github issues, contact@sinicx.com, 2nd author
 affiliations:
   - OMRON SINIC X Corporation
   - Tohoku University
