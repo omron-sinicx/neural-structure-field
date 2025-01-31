@@ -1,0 +1,192 @@
+theme: default # default || dark
+organization: OMRON SINIC X
+twitter: '@omron_sinicx'
+title: 'Neural structure fields with application to crystal structure autoencoders'
+conference: Communications Materials 2023
+resources:
+  paper: https://www.nature.com/articles/s43246-023-00432-w
+  poster:
+  code: https://github.com/omron-sinicx/neural-structure-field
+  video: 
+  blog: 
+  demo: 
+  huggingface: 
+description: Express crystal structures as 3D continuous fields for crystal structure prediction
+image: https://omron-sinicx.github.io/neural-structure-field/teaser_small.png
+url: https://omron-sinicx.github.io/neural-structure-field
+speakerdeck: 
+authors:
+  - name: Naoya Chiba
+    affiliation: [1,2]
+    position: associate professor
+    url: https://sites.google.com/view/n-chiba-
+  - name: Yuta Suzuki
+    affiliation: [3,4]
+    position: researcher
+    url: https://suzuki.phd/
+  - name: Tatsunori Taniai
+    affiliation: [1]
+    url: http://taniai.space/
+    position: senior researcher
+  - name: Ryo Igarashi
+    affiliation: [1]
+    position: project researcher
+    url: https://scholar.google.com/citations?user=i06GU0EAAAAJ
+  - name: Kotaro Saito
+    affiliation: [5,6]
+    position: visiting researcher
+    url: https://sites.google.com/view/kotarosaito/
+  - name: Yoshitaka Ushiku
+    affiliation: [1]
+    position: vice president for research
+    url: https://yoshitakaushiku.net/
+  - name: Kanta Ono
+    affiliation: [6]
+    position: professor
+    url: https://scholar.google.com/citations?user=mJwzYNwAAAAJ
+contact_ids: ['github', 1] #=> github issues, contact@sinicx.com, 2nd author
+affiliations:
+  - OMRON SINIC X Corporation
+  - Tohoku University
+  - Toyota Motor Corporation
+  - SOKENDAI
+  - Randeft Inc.
+  - Osaka University
+meta:
+  - 
+bibtex: >
+  @article{chiba2023nesf,
+    author  = {Naoya Chiba and 
+               Yuta Suzuki and
+               Tatsunori Taniai and
+               Ryo Igarashi and
+               Yoshitaka Ushiku and
+               Kotaro Saito and 
+               Kanta Ono
+               },
+    title   = {Neural structure fields with application to crystal structure autoencoders},
+    journal = {Communications Materials},
+    volume  = {4},
+    number  = {1},
+    pages   = {106},
+    year    = {2023},
+    month   = {12},
+    day     = {12},
+    doi     = {10.1038/s43246-023-00432-w}
+  }
+
+header:
+  bg_curve:
+    sinic_curve.png
+    #  bg_image: https://github.com/omron-sinicx/swarm-body/raw/main/images/teaser.jpg
+
+teaser: icon.png
+overview: |
+  Representing crystal structures of materials to facilitate determining them via neural 
+  networks is crucial for enabling machine-learning applications involving crystal structure 
+  estimation. Among these applications, the inverse design of materials can contribute to 
+  explore materials with desired properties without relying on luck or serendipity. Here, 
+  we propose **neural structure fields (NeSF)** as an accurate and practical approach for 
+  representing crystal structures using neural networks. *Inspired by the concepts of vector 
+  fields in physics and implicit neural representations in computer vision, the proposed 
+  NeSF considers a crystal structure as a continuous field rather than as a discrete set of 
+  atoms.* Unlike existing grid-based discretized spatial representations, the NeSF overcomes 
+  the tradeoff between spatial resolution and computational complexity and can represent any 
+  crystal structure. We propose an autoencoder of crystal structures that can recover various 
+  crystal structures, such as those of perovskite structure materials and cuprate 
+  superconductors. Extensive quantitative results demonstrate the superior performance of 
+  the NeSF compared with the existing grid-based approach.
+
+body:
+  - title: Crystal Structures as Continuous Fields
+    text: |
+      The crystal structure of an inorganic material is a regular and periodic arrangement 
+      of atoms in 3D space. This periodic arrangement is usually described by a minimum 
+      repeatable pattern called a unit cell. The atoms in a unit cell have no explicit order, 
+      and their quantity varies from one to hundreds in number.
+      
+      *Because ML models generally accept fixed-dimensional and consistently ordered tensors 
+      for processing, determining crystal structures via the models is challenging.*
+
+      To address this problem, *we represent a crystal structure as 
+      a continuous vector field tied to 3D space, rather than as a discrete set of atoms.*
+      The proposed approach, named neural structure fields (NeSF), 
+      uses two types of vector fields: position field and species field.
+      These fields implicitly represent the positions and species of the atoms in the unit cell, respectively.
+
+      <img src="nesf.png" class="uk-align-center uk-width-4-5@m" alt="neural structure fields" />
+
+      To illustrate the concept of the NeSF, assume that we are given target material information 
+      as a fixed-dimensional vector, $\bm{z}$, and consider the problem of recovering a crystal 
+      structure from $\bm{z}$. Input $\bm{z}$ may specify, for example, information on the crystal 
+      structure of a material or some desired criteria for materials to be produced.
+      
+      The NeSF treats $f$ as a vector field on 3D Cartesian coordinates $\bm{p}$,
+      conditioned on the target material information, $\bm{z}$:
+
+      $$\bm{s} = f(\bm{p}, \bm{z})$$
+
+      In the position field, network $f$ is trained to output a 3D vector pointing from query point $\bm{p}$
+      to its nearest atom position $\bm{a}$ in the crystal structure of interest. Thus, we expect 
+      output $\bm{s}$ to be $\bm{a} - \bm{p}$. If the position field is ideally trained, 
+      we can retrieve position $\bm{a}$ of 
+      the nearest atom at any query point $\bm{p}$ as $\bm{p} + f(\bm{p}, \bm{z})$. 
+      
+      Analogously, the species field is trained to output a categorical 
+      probability distribution that indicates the species of the nearest atom.
+
+  - title: Application to Crystal Autoencoders
+    text: |
+      As an application of the NeSF, we present an autoencoder of crystal structures. 
+      In this autoencoder, crystal structures are embedded into vectors $\bm{z}$ (called latent vectors) 
+      via an encoder, and then the NeSF acts as a decoder to recover the input crystal structures 
+      from $\bm{z}$. 
+      
+      <img src="autoencoder.png" class="uk-align-center uk-width-4-5@m" alt="crystal autoencoders" />
+
+      Autoencoders are typically used to learn latent vector representations of data 
+      via self-supervised learning, in which the input data can supervise the learning via 
+      a reconstruction loss.
+
+      ### Benchmark
+
+      *The NeSF-based autoencoder outperforms an existing voxel-based method,
+      ICSG3D ([Court et al., 2020](https://pubs.acs.org/doi/10.1021/acs.jcim.0c00464)), 
+      in reconstruction accuracies.*
+
+      <img src="benchmark.png" class="uk-align-center uk-width-4-5@m" alt="benchmark results" />
+
+      <img src="result.png" class="uk-align-center uk-width-2-3@m" alt="benchmark results" />
+
+      ### Interpolation of Materials
+      *Interestingly, the learned latent space with the NeSF enables us to produce interpolated
+      crystal structures between a pair of materials.*
+
+      <div style="text-align:center"><p>
+      <img src="interpolation1.png" class="uk-responsive-width" alt="latent space interpolation 1" />
+      <br />
+      <strong>Latent space interpolation from ZnS to CdS</strong>
+      </p></div>
+
+      <div style="text-align:center"><p>
+      <img src="interpolation2.png" class="uk-responsive-width" alt="latent space interpolation 2" />
+      <br />
+      <strong>Latent space interpolation from MgO to NaCl</strong>
+      </p></div>
+
+projects:
+  - title: 'Crystalformer: Infinitely Connected Attention for Periodic Structure Encoding'
+    journal: "ICLR 2024"
+    img: https://omron-sinicx.github.io/crystalformer/teaser_small.png
+    description: Propose a transformer for crystal property prediction by mimicking interatomic potential summations via self-attention.
+    url: https://omron-sinicx.github.io/crystalformer/
+
+  - title: 'Rethinking the role of frames for SE(3)-invariant crystal structure modeling'
+    journal: "ICLR 2025"
+    img: https://omron-sinicx.github.io/crystalframer/teaser_small.png
+    description: |
+      Propose a geometrically-invariant transformer for crystals with dynamic frames, 
+      which standardize the orientations of local atomic environments
+      represented by internal attention weights.
+    url: https://omron-sinicx.github.io/crystalframer/
+
