@@ -32,14 +32,14 @@ authors:
     affiliation: [1]
     position: project researcher
     url: https://scholar.google.com/citations?user=i06GU0EAAAAJ
-  - name: Kotaro Saito
-    affiliation: [5,6]
-    position: visiting researcher
-    url: https://sites.google.com/view/kotarosaito/
   - name: Yoshitaka Ushiku
     affiliation: [1]
     position: vice president for research
     url: https://yoshitakaushiku.net/
+  - name: Kotaro Saito
+    affiliation: [5,6]
+    position: visiting researcher
+    url: https://sites.google.com/view/kotarosaito/
   - name: Kanta Ono
     affiliation: [6]
     position: professor
@@ -121,7 +121,7 @@ body:
       structure from $\bm{z}$. Input $\bm{z}$ may specify, for example, information on the crystal 
       structure of a material or some desired criteria for materials to be produced.
       
-      The NeSF treats $f$ as a vector field on 3D Cartesian coordinates $\bm{p}$,
+      The NeSF uses a neural network, $f$, as a vector field on 3D Cartesian coordinates $\bm{p}$,
       conditioned on the target material information, $\bm{z}$:
 
       $$\bm{s} = f(\bm{p}, \bm{z})$$
